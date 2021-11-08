@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 /**
@@ -67,7 +68,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var count = 0
+    var num = abs(n)
+    do {
+        num /= 10
+        count++
+    } while (num != 0)
+    return count
+}
 
 /**
  * Простая
@@ -75,7 +84,26 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+
+//solution for n=50 (+loop)
+fun fib(n: Int): Long {
+    var fibp: Long = 1
+    var fibpp: Long = 1
+    var fibn: Long = 1
+    if (n == 1 || n == 2) 1
+    else if (n > 2) {
+        for (i in 3..n) {
+            fibn = fibp + fibpp
+            fibpp = fibp
+            fibp = fibn
+        }
+    }
+    return fibn
+}
+//fun fib(n: Int): Int = (((sqrt(5.0) + 1) / 2).pow(n.toDouble()) / sqrt(5.0) + 0.5).toInt()  //fast solution
+
+//fun fib(n: Int): Int = if (n<=2) 1 else fib(n-2)+fib(n-1)  //solution (+recursion)
+
 
 /**
  * Простая
@@ -83,21 +111,39 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    var num1 = m
+    var num2 = n
+    var tmp: Int
+    while (num2 != 0) {
+        tmp = num1 % num2
+        num1 = num2
+        num2 = tmp
+    }
+    return n * m / num1
+
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    for (i in 2..sqrt(n.toDouble()).toInt()) {
+        if (n % i == 0)
+            return i
+    }
+    return n
+}
+
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -106,7 +152,7 @@ fun maxDivisor(n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean = lcm(m, n) == m * n
 
 /**
  * Простая
@@ -115,7 +161,18 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    for (i in m..n) {
+        val k = sqrt(i.toDouble()).toInt()
+
+        if (k * k in m..n) {
+            return true
+        }
+    }
+    return false
+}
+
 
 /**
  * Средняя
@@ -133,7 +190,20 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var step = 0
+    var num = x
+    while (num != 1) {
+        if (num % 2 == 0) {
+            num /= 2
+            step++
+        } else if (num % 2 != 0) {
+            num = 3 * num + 1
+            step++
+        }
+    }
+    return step
+}
 
 /**
  * Средняя
@@ -144,7 +214,18 @@ fun collatzSteps(x: Int): Int = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var count = 1
+    var sin = x % (2 * Math.PI)
+    val sinConst = sin
+    var eq = sin
+    while (abs(eq) >= eps) {
+        eq = -eq * sinConst / ((count * 2 + 1) * (count * 2)).toDouble() * sinConst
+        count += 1
+        sin += eq
+    }
+    return sin
+}
 
 /**
  * Средняя
@@ -155,7 +236,18 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var eq = 1.0
+    var count = 1
+    var cos = 1.0
+    val constX = x % (2 * Math.PI)
+    while (abs(eq) >= eps) {
+        eq = -eq * constX / ((count * 2 - 1) * (count * 2)).toDouble() * constX
+        count += 1
+        cos += eq
+    }
+    return cos
+}
 
 /**
  * Средняя
@@ -164,7 +256,15 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var rev = 0
+    var num = n
+    while (num >= 1) {
+        rev = rev * 10 + (num % 10)
+        num /= 10
+    }
+    return rev
+}
 
 /**
  * Средняя
@@ -175,7 +275,7 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 /**
  * Средняя
@@ -191,7 +291,8 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Сложная
  *
  * Найти n-ю цифру последовательности из квадратов целых чисел:
- * 149162536496481100121144...
+ * 1 4 9 16 25 36 49 64 81 100 121 144...
+ * 1 3 6 22 67
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  *
  * Использовать операции со строками в этой задаче запрещается.

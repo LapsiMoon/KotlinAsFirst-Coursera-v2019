@@ -85,7 +85,8 @@ class Tests {
         assertEquals(1134903170, fib(45))
         assertEquals(1836311903, fib(46))
         // Just to calculate it
-        fib(50)
+        assertEquals(12586269025, fib(50))
+        assertEquals(3524578, fib(33))
     }
 
     @Test
@@ -139,6 +140,9 @@ class Tests {
         assertFalse(isCoPrime(37, 111))
         assertTrue(isCoPrime(1234567890, 908765431))
         assertTrue(isCoPrime(2109876543, 1234567891))
+
+        assertTrue(isCoPrime(127, 11))
+        assertFalse(isCoPrime(99, 33))
     }
 
     @Test
@@ -152,6 +156,10 @@ class Tests {
         assertFalse(squareBetweenExists(999, 1001))
         assertTrue(squareBetweenExists(152374337, 152423715))
         assertFalse(squareBetweenExists(2147395601, Int.MAX_VALUE))
+
+        assertFalse(squareBetweenExists(2, 3))
+        assertTrue(squareBetweenExists(3, 4))
+        assertFalse(squareBetweenExists(21, 23))
     }
 
     @Test
@@ -223,6 +231,7 @@ class Tests {
         assertFalse(hasDifferentDigits(0))
         assertFalse(hasDifferentDigits(777))
         assertTrue(hasDifferentDigits(31122))
+
     }
 
     @Test
